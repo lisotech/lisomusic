@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lisomusic - Host & Stream Your Sounds</title>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- jsmediatags library for reading MP3 ID3 Tags -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
+
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #0b0f19;
+      color: #ffffff;
+      padding-bottom: 120px;
+      /* Space for player */
+    }
+
+    /* Header Styles */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 5%;
+      background-color: #111827;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #10b981;
+      /* Emerald Green accent */
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      color: #9ca3af;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover,
+    nav ul li a.active {
+      color: #ffffff;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, #111827 0%, #0b0f19 100%);
+      padding: 80px 5%;
+      text-align: center;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      line-height: 1.2;
+      margin-bottom: 15px;
+    }
+
+    .hero h1 span {
+      color: #10b981;
+    }
+
+    .hero p {
+      color: #9ca3af;
+      font-size: 18px;
+      margin-bottom: 40px;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: #1f2937;
+      max-width: 600px;
+      margin: 0 auto;
+      border-radius: 50px;
+      padding: 5px 5px 5px 20px;
+      border: 1px solid #374151;
+    }
+
+    .search-bar i {
+      color: #9ca3af;
+      margin-right: 10px;
+    }
+
+    .search-bar input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: white;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    .search-bar button {
+      background-color: #10b981;
+      color: white;
+      border-radius: 50px;
+      padding: 12px 25px;
+      font-weight: 600;
+    }
+
+    /* Main Music Grid */
+    main {
+      padding: 40px 5%;
+    }
+
+    .music-section h2 {
+      font-size: 24px;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .music-section h2 i {
+      color: #ef4444;
+    }
+
+    .music-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 25px;
+    }
+
+    .track-card {
+      background-color: #111827;
+      padding: 15px;
+      border-radius: 12px;
+      transition: transform 0.3s, background-color 0.3s;
+      cursor: pointer;
+      border: 1px solid #1f2937;
+    }
+
+    .track-card:hover {
+      transform: translateY(-5px);
+      background-color: #1f2937;
+    }
+
+    .card-img {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 15px;
+      background-color: #1f2937;
+    }
+
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .play-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .play-overlay i {
+      font-size: 30px;
+      color: #10b981;
+    }
+
+    .track-card:hover .play-overlay {
+      opacity: 1;
+    }
+
+    .track-card h3 {
+      font-size: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 5px;
+    }
+
+    .track-card p {
+      color: #9ca3af;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Persistent Audio Player */
+    .audio-player {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #111827;
+      border-top: 1px solid #1f2937;
+      padding: 20px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      visibility: hidden;
+    }
+
+    .player-info h4 {
+      font-size: 16px;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 250px;
+    }
+
+    .player-info p {
+      color: #9ca3af;
+      font-size: 13px;
+    }
+
+    .player-controls button {
+      background-color: #10b981;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header / Navigation -->
+  <header>
+    <div class="logo">
+      <i class="fa-solid fa-headphones-simple"></i> Lisomusic
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#">Discover</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hidden File Input for Admin Key Combination -->
+  <input type="file" id="admin-tag-uploader" accept="audio/mp3" style="display: none;" onchange="readMP3Tags(this)">
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Your Music. Your Audience. <br><span>Free MP3 Hosting.</span></h1>
+      <p>Upload, share, and stream your favorite tracks in high quality. No limits, just pure sound.</p>
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search for songs, artists, or podcasts...">
+        <button>Search</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Grid -->
+  <main>
+    <section class="music-section">
+      <h2><i class="fa-solid fa-fire"></i> Trending Now</h2>
+      <div class="music-grid" id="musicGrid">
+
+        <!-- Track 1 -->
+        <div class="track-card" onclick="playSong('phillip', 'Cyberheart', 'phillip.mp3')">
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300" alt="Album Art">
+            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+          </div>
+          <h3>Phillip Lisomona</h3>
+          <p>Kotwembela</p>
+        </div>
+
+        <!-- Track 2 -->
+        <div class="track-card" onclick="playSong('Summer Vibes', 'Sunny Beats', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3')">
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300" alt="Album Art">
+            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+          </div>
+          <h3>Summer Vibes</h3>
+          <p>Sunny Beats</p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Persistent Floating Player -->
+  <div class="audio-player" id="audioPlayer">
+    <div class="player-info">
+      <h4 id="playerTitle">Select a track</h4>
+      <p id="playerArtist">Lisomusic Stream</p>
+    </div>
+    <div class="player-controls">
+      <audio id="mainAudio" src=""></audio>
+      <button onclick="togglePlay()" id="playBtn"><i class="fa-solid fa-play"></i></button>
+    </div>
+  </div>
+
+  <!-- Script Processing Engine -->
+  <script>
+    const audio = document.getElementById('mainAudio');
+    const player = document.getElementById('audioPlayer');
+    const playerTitle = document.getElementById('playerTitle');
+    const playerArtist = document.getElementById('playerArtist');
+    const playBtn = document.getElementById('playBtn');
+    const musicGrid = document.getElementById('musicGrid');
+    // Play Selected Track Logic
+    function playSong(title, artist, src) {
+      player.style.visibility = 'visible';
+      playerTitle.innerText = title;
+      playerArtist.innerText = artist;
+      audio.src = src;
+      audio.play();
+      playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+    }
+    // Toggle Audio State (Play/Pause)
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+        playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+      } else {
+        audio.pause();
+        playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+      }
+    }
+    // --- MP3 Tag Reader Configuration ---
+    // Hidden shortcut hook: Admins press Ctrl+U or Cmd+U to trigger upload window
+    window.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u') {
+        e.preventDefault();
+        document.getElementById('admin-tag-uploader').click();
+      }
+    });
+
+    function readMP3Tags(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const audioURL = URL.createObjectURL(file);
+      // Invoke jsmediatags processing engine
+      jsmediatags.read(file, {
+        onSuccess: function(tag) {
+          const tags = tag.tags;
+          // Extract title and artist text frames, fallback to filename if missing
+          const title = tags.title || file.name.replace(/\.[^/.]+$/, "");
+          const artist = tags.artist || "Unknown Artist";
+          // Extract embedded raw binary artwork frame data
+          let imageURL = "https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=300"; // default cover fallback
+          if (tags.picture) {
+            const {
+              data,
+              format
+            } = tags.picture;
+            let base64String = "";
+            for (let i = 0; i < data.length; i++) {
+              base64String += String.fromCharCode(data[i]);
+            }
+            imageURL = `data:${format};base64,${window.btoa(base64String)}`;
+          }
+          // Generate clean, secure template literal component markup
+          const trackHTML = `
+                        <div class="track-card" onclick="playSong('${title.replace(/'/g, "\\'")}', '${artist.replace(/'/g, "\\'")}', '${audioURL}')">
+                            <div class="card-img">
+                                <img src="${imageURL}" alt="Album Art">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </div>
+                            <h3>${title}</h3>
+                            <p>${artist}</p>
+                        </div>
+                    `;
+          // Push component onto UI dashboard grid layer view
+          musicGrid.insertAdjacentHTML('afterbegin', trackHTML);
+        },
+        onError: function(error) {
+          console.log('Error parsing ID3 metadata: ', error.type, error.info);
+          // Minimal parsing fallback engine directly utilizing filename string structures
+          const fallbackTitle = file.name.replace(/\.[^/.]+$/, "");
+          const fallbackHTML = `
+                        <div class="track-card" onclick="playSong('${fallbackTitle.replace(/'/g, "\\'")}', 'Unknown Artist', '${audioURL}')">
+                            <div class="card-img">
+                                <img src="https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=300" alt="Album Art">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </div>
+                            <h3>${fallbackTitle}</h3>
+                            <p>Unknown Artist</p>
+                        </div>
+                    `;
+          musicGrid.insertAdjacentHTML('afterbegin', fallbackHTML);
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>
