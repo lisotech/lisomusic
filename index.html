@@ -127,16 +127,13 @@
             color: #10b981;
         }
 
-        /* Adaptive 4x3 Component Grid Layer Matrix */
+        /* Locked 3xColumn Component Grid Layer Matrix */
         .music-grid {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 30px;
         }
 
-        @media (max-width: 1024px) {
-            .music-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        }
         @media (max-width: 768px) {
             .music-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
@@ -144,17 +141,17 @@
             .music-grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
         }
 
-        /* Clickable Structural Interactive Cards UI */
-        .track-card, .artist-card {
+        /* Interactive Structural Album Cards UI (Complete Uncropped Photo Box) */
+        .artist-card {
             background-color: #111827;
-            padding: 15px;
+            padding: 16px;
             border-radius: 12px;
             transition: transform 0.3s, background-color 0.3s;
             cursor: pointer;
             border: 1px solid #1f2937;
         }
 
-        .track-card:hover, .artist-card:hover {
+        .artist-card:hover {
             transform: translateY(-5px);
             background-color: #1f2937;
         }
@@ -163,7 +160,7 @@
             position: relative;
             width: 100%;
             aspect-ratio: 1;
-            border-radius: 8px;
+            border-radius: 8px; /* Clean square-cut rounded corners instead of circle */
             overflow: hidden;
             margin-bottom: 15px;
             background-color: #1f2937;
@@ -172,11 +169,7 @@
         .card-img img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-        }
-
-        .artist-card .card-img {
-            border-radius: 50%;
+            object-fit: cover; /* Displays complete image coverage frame */
         }
 
         .play-overlay {
@@ -194,23 +187,23 @@
         }
 
         .play-overlay i {
-            font-size: 32px;
+            font-size: 36px;
             color: #10b981;
         }
 
-        .track-card:hover .play-overlay, .artist-card:hover .play-overlay {
+        .artist-card:hover .play-overlay {
             opacity: 1;
         }
 
-        .track-card h3, .artist-card h3 {
-            font-size: 16px;
+        .artist-card h3 {
+            font-size: 18px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
-        .track-card p, .artist-card p {
+        .artist-card p {
             color: #9ca3af;
             font-size: 14px;
             white-space: nowrap;
@@ -245,7 +238,7 @@
         .artist-profile-summary img {
             width: 70px;
             height: 70px;
-            border-radius: 50%;
+            border-radius: 8px; /* Square layout consistent with cover style changes */
             object-fit: cover;
             border: 2px solid #10b981;
         }
@@ -455,7 +448,7 @@
             renderRosterGrid();
         });
 
-        // Grid Generator Roster Engine Layout 4x3 Core Configuration Loop
+        // Grid Generator Roster Engine Layout Locked 3-Column Core Loop
         function renderRosterGrid() {
             artistsDisplayGrid.innerHTML = '';
             CORE_STORE.artists.forEach(artist => {
