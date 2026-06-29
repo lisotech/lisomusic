@@ -1,440 +1,677 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lisomusic - Host & Stream Your Sounds</title>
-  <!-- FontAwesome for Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- jsmediatags library for reading MP3 ID3 Tags -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lisomusic - Host & Stream Your Sounds</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
 
-  <style>
-    /* Reset and Base Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+    <style>
+        /* Reset and Base Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    body {
-      background-color: #0b0f19;
-      color: #ffffff;
-      padding-bottom: 120px;
-      /* Space for player */
-    }
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            padding-bottom: 140px; /* Prevent media bar overlapping data layouts */
+        }
 
-    /* Header Styles */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 5%;
-      background-color: #111827;
-      border-bottom: 1px solid #1f2937;
-    }
+        /* Navigation Bar Framework */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: #111827;
+            border-bottom: 1px solid #1f2937;
+        }
 
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-      color: #10b981;
-      /* Emerald Green accent */
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
 
-    nav ul {
-      display: flex;
-      list-style: none;
-      gap: 30px;
-      align-items: center;
-    }
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
 
-    nav ul li a {
-      color: #9ca3af;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
+        nav ul li a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
 
-    nav ul li a:hover,
-    nav ul li a.active {
-      color: #ffffff;
-    }
+        nav ul li a:hover, nav ul li a.active {
+            color: #ffffff;
+        }
 
-    /* Hero Section */
-    .hero {
-      background: linear-gradient(135deg, #111827 0%, #0b0f19 100%);
-      padding: 80px 5%;
-      text-align: center;
-      border-bottom: 1px solid #1f2937;
-    }
+        /* Hero Landing Showcase Jumbotron */
+        .hero {
+            background: linear-gradient(135deg, #111827 0%, #0b0f19 100%);
+            padding: 60px 5%;
+            text-align: center;
+            border-bottom: 1px solid #1f2937;
+        }
 
-    .hero h1 {
-      font-size: 42px;
-      line-height: 1.2;
-      margin-bottom: 15px;
-    }
+        .hero h1 {
+            font-size: 42px;
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
 
-    .hero h1 span {
-      color: #10b981;
-    }
+        .hero h1 span {
+            color: #10b981;
+        }
 
-    .hero p {
-      color: #9ca3af;
-      font-size: 18px;
-      margin-bottom: 40px;
-    }
+        .hero p {
+            color: #9ca3af;
+            font-size: 18px;
+            margin-bottom: 35px;
+        }
 
-    .search-bar {
-      display: flex;
-      align-items: center;
-      background-color: #1f2937;
-      max-width: 600px;
-      margin: 0 auto;
-      border-radius: 50px;
-      padding: 5px 5px 5px 20px;
-      border: 1px solid #374151;
-    }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #1f2937;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 50px;
+            padding: 5px 20px;
+            border: 1px solid #374151;
+        }
 
-    .search-bar i {
-      color: #9ca3af;
-      margin-right: 10px;
-    }
+        .search-bar i {
+            color: #9ca3af;
+            margin-right: 12px;
+        }
 
-    .search-bar input {
-      background: transparent;
-      border: none;
-      outline: none;
-      color: white;
-      width: 100%;
-      font-size: 16px;
-    }
+        .search-bar input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            width: 100%;
+            font-size: 16px;
+            padding: 10px 0;
+        }
 
-    .search-bar button {
-      background-color: #10b981;
-      color: white;
-      border-radius: 50px;
-      padding: 12px 25px;
-      font-weight: 600;
-    }
+        /* Core View Containers layout */
+        main {
+            padding: 40px 5%;
+        }
 
-    /* Main Music Grid */
-    main {
-      padding: 40px 5%;
-    }
+        .music-section h2 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .music-section h2 {
-      font-size: 24px;
-      margin-bottom: 25px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+        .music-section h2 i {
+            color: #10b981;
+        }
 
-    .music-section h2 i {
-      color: #ef4444;
-    }
+        /* Adaptive 4x3 Component Grid Layer Matrix */
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 25px;
+        }
 
-    .music-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 25px;
-    }
+        @media (max-width: 1024px) {
+            .music-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        @media (max-width: 768px) {
+            .music-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 480px) {
+            .music-grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        }
 
-    .track-card {
-      background-color: #111827;
-      padding: 15px;
-      border-radius: 12px;
-      transition: transform 0.3s, background-color 0.3s;
-      cursor: pointer;
-      border: 1px solid #1f2937;
-    }
+        /* Clickable Structural Interactive Cards UI */
+        .track-card, .artist-card {
+            background-color: #111827;
+            padding: 15px;
+            border-radius: 12px;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+            border: 1px solid #1f2937;
+        }
 
-    .track-card:hover {
-      transform: translateY(-5px);
-      background-color: #1f2937;
-    }
+        .track-card:hover, .artist-card:hover {
+            transform: translateY(-5px);
+            background-color: #1f2937;
+        }
 
-    .card-img {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 8px;
-      overflow: hidden;
-      margin-bottom: 15px;
-      background-color: #1f2937;
-    }
+        .card-img {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            background-color: #1f2937;
+        }
 
-    .card-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-    .play-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
+        .artist-card .card-img {
+            border-radius: 50%;
+        }
 
-    .play-overlay i {
-      font-size: 30px;
-      color: #10b981;
-    }
+        .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
 
-    .track-card:hover .play-overlay {
-      opacity: 1;
-    }
+        .play-overlay i {
+            font-size: 32px;
+            color: #10b981;
+        }
 
-    .track-card h3 {
-      font-size: 16px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 5px;
-    }
+        .track-card:hover .play-overlay, .artist-card:hover .play-overlay {
+            opacity: 1;
+        }
 
-    .track-card p {
-      color: #9ca3af;
-      font-size: 14px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+        .track-card h3, .artist-card h3 {
+            font-size: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 5px;
+        }
 
-    /* Persistent Audio Player */
-    .audio-player {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background-color: #111827;
-      border-top: 1px solid #1f2937;
-      padding: 20px 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-      visibility: hidden;
-    }
+        .track-card p, .artist-card p {
+            color: #9ca3af;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-    .player-info h4 {
-      font-size: 16px;
-      margin-bottom: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 250px;
-    }
+        /* Dynamic Album Playlist Layer Viewport Panel */
+        .playlist-view {
+            background-color: #111827;
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 20px;
+            border: 1px solid #1f2937;
+        }
 
-    .player-info p {
-      color: #9ca3af;
-      font-size: 13px;
-    }
+        .playlist-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #1f2937;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
 
-    .player-controls button {
-      background-color: #10b981;
-      color: white;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 20px;
-      cursor: pointer;
-    }
-  </style>
+        .artist-profile-summary {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .artist-profile-summary img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #10b981;
+        }
+
+        .close-playlist-btn {
+            background-color: #1f2937;
+            border: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .close-playlist-btn:hover {
+            background-color: #ef4444;
+        }
+
+        .album-block {
+            margin-bottom: 30px;
+            background: #0b0f19;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #1f2937;
+        }
+
+        .album-title-meta {
+            font-size: 18px;
+            color: #10b981;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Rows Architecture for Tracklist Layout Selection */
+        .track-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #111827;
+        }
+
+        .track-row:hover {
+            background-color: #1f2937;
+        }
+
+        .track-row-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .track-idx {
+            color: #6b7280;
+            font-weight: bold;
+            width: 20px;
+        }
+
+        /* Persistent Bottom Media Controller Overlay UI Rules */
+        .audio-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #111827;
+            border-top: 1px solid #1f2937;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+        }
+
+        .player-info h4 {
+            font-size: 16px;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;
+        }
+
+        .player-info p {
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .player-controls button {
+            background-color: #10b981;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+        }
+    </style>
 </head>
-
 <body>
 
-  <!-- Header / Navigation -->
-  <header>
-    <div class="logo">
-      <i class="fa-solid fa-headphones-simple"></i> Lisomusic
-    </div>
-    <nav>
-      <ul>
-        <li><a href="#" class="active">Home</a></li>
-        <li><a href="#">Discover</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <!-- Hidden File Input for Admin Key Combination -->
-  <input type="file" id="admin-tag-uploader" accept="audio/mp3" style="display: none;" onchange="readMP3Tags(this)">
-
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Your Music. Your Audience. <br><span>Upload your music With us</span></h1>
-      <p>Upload, share, and stream your favorite tracks in high quality. No limits, just pure sound.</p>
-      <div class="search-bar">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" placeholder="Search for songs, artists, or podcasts...">
-        <button>Search</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Main Content Grid -->
-  <main>
-    <section class="music-section">
-      <h2><i class="fa-solid fa-fire"></i> Trending Now</h2>
-      <div class="music-grid" id="musicGrid">
-
-        <!-- Track 1 -->
-        <div class="track-card" onclick="playSong('Phillip_Lisompna', 'Kotwembela', 'phillip.mp3')">
-          <div class="card-img">
-            <img src="p1.jpg" alt="Album Art">
-            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-          </div>
-          <h3>Phillip Lisomona</h3>
-          <p>Kotwembela</p>
+    <header>
+        <div class="logo" onclick="resetToHomeView()">
+            <i class="fa-solid fa-music"></i> Lisomusic
         </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active" id="homeNavLink" onclick="resetToHomeView()">Home</a></li>
+                <li><a href="#" id="discoverNavLink" onclick="scrollToCatalogSection()">Discover Artists</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <!-- Track 2 -->
-         <div class="track-card" onclick="playSong('Phillip_Lisompna', 'Atusanduke', 'ndakulumba.mp3')">
-          <div class="card-img">
-            <img src="p1.jpg" alt="Album Art">
-            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-          </div>
-          <h3>Phillip Lisomona</h3>
-          <p>Ndakulumba</p>
+    <input type="file" id="admin-tag-uploader" accept="audio/mp3" style="display: none;" onchange="readMP3Tags(this)">
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Your Music. Your Audience. <br><span>Upload your music With us</span></h1>
+            <p>Upload, share, and stream your favorite tracks in high quality. No limits, just pure sound.</p>
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="globalSearchField" placeholder="Search for artists, tracks, or soundscapes..." oninput="filterGlobalTracks()">
+            </div>
         </div>
-
-        <!-- Track 3 -->
-         <div class="track-card" onclick="playSong('Phillip_Lisompna', 'Hena Ndilelela', 'hena.mp3')">
-          <div class="card-img">
-            <img src="p1.jpg" alt="Album Art">
-            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-          </div>
-          <h3>Phillip Lisomona</h3>
-          <p>Hena Ndilelela</p>
-        </div>
-
-      </div>
     </section>
-  </main>
 
-  <!-- Persistent Floating Player -->
-  <div class="audio-player" id="audioPlayer">
-    <div class="player-info">
-      <h4 id="playerTitle">Select a track</h4>
-      <p id="playerArtist">Lisomusic Stream</p>
+    <main>
+        <div id="playlistDisplayWrapper" style="display: none; margin-bottom: 40px;"></div>
+
+        <section class="music-section" id="catalog-section">
+            <h2><i class="fa-solid fa-users"></i> Featured Artists & Creators</h2>
+            <div class="music-grid" id="artistsDisplayGrid"></div>
+        </section>
+    </main>
+
+    <div class="audio-player" id="audioPlayer">
+        <div class="player-info">
+            <h4 id="playerTitle">Select a track</h4>
+            <p id="playerArtist">Lisomusic Stream</p>
+        </div>
+        <div class="player-controls">
+            <audio id="mainAudio" src=""></audio>
+            <button onclick="togglePlay()" id="playBtn"><i class="fa-solid fa-play"></i></button>
+        </div>
     </div>
-    <div class="player-controls">
-      <audio id="mainAudio" src=""></audio>
-      <button onclick="togglePlay()" id="playBtn"><i class="fa-solid fa-play"></i></button>
-    </div>
-  </div>
 
-  <!-- Script Processing Engine -->
-  <script>
-    const audio = document.getElementById('mainAudio');
-    const player = document.getElementById('audioPlayer');
-    const playerTitle = document.getElementById('playerTitle');
-    const playerArtist = document.getElementById('playerArtist');
-    const playBtn = document.getElementById('playBtn');
-    const musicGrid = document.getElementById('musicGrid');
-    // Play Selected Track Logic
-    function playSong(title, artist, src) {
-      player.style.visibility = 'visible';
-      playerTitle.innerText = title;
-      playerArtist.innerText = artist;
-      audio.src = src;
-      audio.play();
-      playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-    }
-    // Toggle Audio State (Play/Pause)
-    function togglePlay() {
-      if (audio.paused) {
-        audio.play();
-        playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-      } else {
-        audio.pause();
-        playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-      }
-    }
-    // --- MP3 Tag Reader Configuration ---
-    // Hidden shortcut hook: Admins press Ctrl+U or Cmd+U to trigger upload window
-    window.addEventListener('keydown', function(e) {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u') {
-        e.preventDefault();
-        document.getElementById('admin-tag-uploader').click();
-      }
-    });
+    <script>
+        // Global State Memory Store Repository Object Model
+        const CORE_STORE = {
+            artists: [
+                {
+                    id: "phillip-lisomona",
+                    name: "Phillip Lisomona",
+                    avatar: "p1.jpg",
+                    metaDescription: "Resident Gospel and Traditional Fusion Artist",
+                    albums: [
+                        {
+                            title: "Kotwembela Project Collection",
+                            releaseYear: "2026",
+                            tracks: [
+                                { title: "Kotwembela", src: "phillip.mp3" },
+                                { title: "Ndakulumba", src: "ndakulumba.mp3" },
+                                { title: "Hena Ndilelela", src: "hena.mp3" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: "sunny-beats",
+                    name: "Sunny Beats",
+                    avatar: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300",
+                    metaDescription: "Electronic Soundscapes & Digital Beats Production Studio",
+                    albums: [
+                        {
+                            title: "Summer Resonance LP",
+                            releaseYear: "2025",
+                            tracks: [
+                                { title: "Summer Vibes", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+                                { title: "Ocean Breeze Chillout", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
 
-    function readMP3Tags(input) {
-      const file = input.files[0];
-      if (!file) return;
-      const audioURL = URL.createObjectURL(file);
-      // Invoke jsmediatags processing engine
-      jsmediatags.read(file, {
-        onSuccess: function(tag) {
-          const tags = tag.tags;
-          // Extract title and artist text frames, fallback to filename if missing
-          const title = tags.title || file.name.replace(/\.[^/.]+$/, "");
-          const artist = tags.artist || "Unknown Artist";
-          // Extract embedded raw binary artwork frame data
-          let imageURL = "https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=300"; // default cover fallback
-          if (tags.picture) {
-            const {
-              data,
-              format
-            } = tags.picture;
-            let base64String = "";
-            for (let i = 0; i < data.length; i++) {
-              base64String += String.fromCharCode(data[i]);
-            }
-            imageURL = `data:${format};base64,${window.btoa(base64String)}`;
-          }
-          // Generate clean, secure template literal component markup
-          const trackHTML = `
-                        <div class="track-card" onclick="playSong('${title.replace(/'/g, "\\'")}', '${artist.replace(/'/g, "\\'")}', '${audioURL}')">
-                            <div class="card-img">
-                                <img src="${imageURL}" alt="Album Art">
-                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                            </div>
-                            <h3>${title}</h3>
-                            <p>${artist}</p>
+        // Cache System Core Control Pointers
+        const audio = document.getElementById('mainAudio');
+        const player = document.getElementById('audioPlayer');
+        const playerTitle = document.getElementById('playerTitle');
+        const playerArtist = document.getElementById('playerArtist');
+        const playBtn = document.getElementById('playBtn');
+        const artistsDisplayGrid = document.getElementById('artistsDisplayGrid');
+        const playlistDisplayWrapper = document.getElementById('playlistDisplayWrapper');
+
+        // Initializer Hook Bootstrapper 
+        document.addEventListener("DOMContentLoaded", function() {
+            renderRosterGrid();
+        });
+
+        // Grid Generator Roster Engine Layout 4x3 Core Configuration Loop
+        function renderRosterGrid() {
+            artistsDisplayGrid.innerHTML = '';
+            CORE_STORE.artists.forEach(artist => {
+                let totalTracksCount = 0;
+                artist.albums.forEach(alb => totalTracksCount += alb.tracks.length);
+
+                const componentHTML = `
+                    <div class="artist-card" onclick="revealPlaylistOverlay('${artist.id}')">
+                        <div class="card-img">
+                            <img src="${artist.avatar}" alt="${artist.name}" onerror="this.src='https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=300'">
+                            <div class="play-overlay"><i class="fa-solid fa-list-ul"></i></div>
                         </div>
-                    `;
-          // Push component onto UI dashboard grid layer view
-          musicGrid.insertAdjacentHTML('afterbegin', trackHTML);
-        },
-        onError: function(error) {
-          console.log('Error parsing ID3 metadata: ', error.type, error.info);
-          // Minimal parsing fallback engine directly utilizing filename string structures
-          const fallbackTitle = file.name.replace(/\.[^/.]+$/, "");
-          const fallbackHTML = `
-                        <div class="track-card" onclick="playSong('${fallbackTitle.replace(/'/g, "\\'")}', 'Unknown Artist', '${audioURL}')">
-                            <div class="card-img">
-                                <img src="https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=300" alt="Album Art">
-                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                            </div>
-                            <h3>${fallbackTitle}</h3>
-                            <p>Unknown Artist</p>
-                        </div>
-                    `;
-          musicGrid.insertAdjacentHTML('afterbegin', fallbackHTML);
+                        <h3>${artist.name}</h3>
+                        <p>${artist.albums.length} Album(s) • ${totalTracksCount} Audio Tracks</p>
+                    </div>
+                `;
+                artistsDisplayGrid.insertAdjacentHTML('beforeend', componentHTML);
+            });
         }
-      });
-    }
-  </script>
-</body>
 
+        // Context Display Engine Layer For Selected Artist Playlists Switch Output Actions
+        function revealPlaylistOverlay(artistId) {
+            const artist = CORE_STORE.artists.find(a => a.id === artistId);
+            if (!artist) return;
+
+            let structuralAlbumsHTML = '';
+            artist.albums.forEach(album => {
+                let albumTrackRowsHTML = '';
+                album.tracks.forEach((track, idx) => {
+                    albumTrackRowsHTML += `
+                        <div class="track-row" onclick="streamTrack('${track.title.replace(/'/g, "\\'")}', '${artist.name.replace(/'/g, "\\'")}', '${track.src}')">
+                            <div class="track-row-left">
+                                <span class="track-idx">${idx + 1}</span>
+                                <i class="fa-solid fa-play-circle" style="color:#10b981;"></i>
+                                <span>${track.title}</span>
+                            </div>
+                            <span style="color:#6b7280; font-size:13px;">Stream MP3</span>
+                        </div>
+                    `;
+                });
+
+                structuralAlbumsHTML += `
+                    <div class="album-block">
+                        <div class="album-title-meta">
+                            <i class="fa-solid fa-compact-disc"></i>
+                            <strong>${album.title}</strong> 
+                            <span style="font-size:12px; color:#6b7280;">(${album.releaseYear})</span>
+                        </div>
+                        <div class="tracks-list-container">${albumTrackRowsHTML}</div>
+                    </div>
+                `;
+            });
+
+            playlistDisplayWrapper.innerHTML = `
+                <div class="playlist-view">
+                    <div class="playlist-header">
+                        <div class="artist-profile-summary">
+                            <img src="${artist.avatar}" alt="${artist.name}" onerror="this.src='https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=300'">
+                            <div>
+                                <h2 style="margin-bottom:2px;">${artist.name}</h2>
+                                <p style="color:#9ca3af; font-size:14px;">${artist.metaDescription}</p>
+                            </div>
+                        </div>
+                        <button class="close-playlist-btn" onclick="hidePlaylistPanel()"><i class="fa-solid fa-xmark"></i> Close Playlist</button>
+                    </div>
+                    <div class="playlist-payload-albums">${structuralAlbumsHTML}</div>
+                </div>
+            `;
+
+            playlistDisplayWrapper.style.display = 'block';
+            playlistDisplayWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function hidePlaylistPanel() {
+            playlistDisplayWrapper.style.display = 'none';
+        }
+
+        function resetToHomeView() {
+            hidePlaylistPanel();
+            document.getElementById('globalSearchField').value = '';
+            renderRosterGrid();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToCatalogSection() {
+            document.getElementById('catalog-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Functional Audio Player Control Core Subsystems
+        function streamTrack(title, artist, sourceURL) {
+            player.style.visibility = 'visible';
+            playerTitle.innerText = title;
+            playerArtist.innerText = artist;
+            audio.src = sourceURL;
+            audio.play();
+            playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        }
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            } else {
+                audio.pause();
+                playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            }
+        }
+
+        // Real-Time Query Filter Input Operations Pattern Matrix Lookups
+        function filterGlobalTracks() {
+            const currentQuery = document.getElementById('globalSearchField').value.toLowerCase().trim();
+            if (!currentQuery) {
+                renderRosterGrid();
+                return;
+            }
+
+            artistsDisplayGrid.innerHTML = '';
+            CORE_STORE.artists.forEach(artist => {
+                let matchesSearch = artist.name.toLowerCase().includes(currentQuery);
+                
+                // Inspect secondary match conditions if direct artist structural name matches are missing
+                if (!matchesSearch) {
+                    artist.albums.forEach(al => {
+                        if (al.title.toLowerCase().includes(currentQuery)) matchesSearch = true;
+                        al.tracks.forEach(tr => {
+                            if (tr.title.toLowerCase().includes(currentQuery)) matchesSearch = true;
+                        });
+                    });
+                }
+
+                if (matchesSearch) {
+                    let totalTracksCount = 0;
+                    artist.albums.forEach(alb => totalTracksCount += alb.tracks.length);
+
+                    const componentHTML = `
+                        <div class="artist-card" onclick="revealPlaylistOverlay('${artist.id}')">
+                            <div class="card-img">
+                                <img src="${artist.avatar}" alt="${artist.name}" onerror="this.src='https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=300'">
+                                <div class="play-overlay"><i class="fa-solid fa-list-ul"></i></div>
+                            </div>
+                            <h3>${artist.name}</h3>
+                            <p>${artist.albums.length} Album(s) • ${totalTracksCount} Audio Tracks</p>
+                        </div>
+                    `;
+                    artistsDisplayGrid.insertAdjacentHTML('beforeend', componentHTML);
+                }
+            });
+        }
+
+        // Key Combo Catch-Intercept Configuration Listener Actions Hooks (`Ctrl + U` / `Cmd + U`)
+        window.addEventListener('keydown', function(ev) {
+            if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'u') {
+                ev.preventDefault();
+                document.getElementById('admin-tag-uploader').click();
+            }
+        });
+
+        // Dynamic Native Embedded Tag Reader Pipeline Construction Logic Engine
+        function readMP3Tags(inputSource) {
+            const uploadedTargetFile = inputSource.files[0];
+            if (!uploadedTargetFile) return;
+
+            const structuredAudioBlobURL = URL.createObjectURL(uploadedTargetFile);
+
+            jsmediatags.read(uploadedTargetFile, {
+                onSuccess: function(extractedPayload) {
+                    const id3Frames = extractedPayload.tags;
+                    const cleanTitle = id3Frames.title || uploadedTargetFile.name.replace(/\.[^/.]+$/, "");
+                    const targetArtistName = id3Frames.artist || "Admin Session Artist";
+                    const targetAlbumName = id3Frames.album || "Admin Sandbox Single";
+
+                    let convertedArtworkString = "https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=300";
+                    if (id3Frames.picture) {
+                        const { data, format } = id3Frames.picture;
+                        let binaryContentBuffer = "";
+                        for (let elementIdx = 0; elementIdx < data.length; elementIdx++) {
+                            binaryContentBuffer += String.fromCharCode(data[elementIdx]);
+                        }
+                        convertedArtworkString = `data:${format};base64,${window.btoa(binaryContentBuffer)}`;
+                    }
+
+                    // Dynamically map or inject data to runtime runtime store structure instance maps
+                    let artistNode = CORE_STORE.artists.find(a => a.name.toLowerCase() === targetArtistName.toLowerCase());
+                    if (!artistNode) {
+                        artistNode = {
+                            id: targetArtistName.toLowerCase().replace(/[^a-z0-9]/g, "-"),
+                            name: targetArtistName,
+                            avatar: convertedArtworkString,
+                            metaDescription: "Dynamically uploaded administrator local file index profile.",
+                            albums: []
+                        };
+                        CORE_STORE.artists.push(artistNode);
+                    }
+
+                    let albumNode = artistNode.albums.find(al => al.title.toLowerCase() === targetAlbumName.toLowerCase());
+                    if (!albumNode) {
+                        albumNode = {
+                            title: targetAlbumName,
+                            releaseYear: "2026",
+                            tracks: []
+                        };
+                        artistNode.albums.push(albumNode);
+                    }
+
+                    albumNode.tracks.unshift({ title: cleanTitle, src: structuredAudioBlobURL });
+                    
+                    // Force refresh layout view updates loops
+                    renderRosterGrid();
+                    revealPlaylistOverlay(artistNode.id);
+                    alert(`"${cleanTitle}" added to state repository.`);
+                },
+                onError: function(errorLog) {
+                    alert("ID3 Tag structural read execution dropped. File parsing aborted.");
+                }
+            });
+        }
+    </script>
+</body>
 </html>
