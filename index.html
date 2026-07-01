@@ -117,7 +117,8 @@
       padding: 40px 5%;
     }
 
-    .music-section h2 {
+    .music-section h2,
+    .video-section h2 {
       font-size: 24px;
       margin-bottom: 25px;
       display: flex;
@@ -125,25 +126,31 @@
       gap: 10px;
     }
 
-    .music-section h2 i {
+    .music-section h2 i,
+    .video-section h2 i {
       color: #10b981;
     }
 
     /* Locked 3-Column Component Grid Layer Matrix */
-    .music-grid {
+    .music-grid,
+    .video-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 30px;
     }
 
-    @media (max-width: 768px) {
-      .music-grid {
+    @media (max-width: 992px) {
+
+      .music-grid,
+      .video-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 480px) {
-      .music-grid {
+    @media (max-width: 600px) {
+
+      .music-grid,
+      .video-grid {
         grid-template-columns: repeat(1, minmax(0, 1fr));
       }
     }
@@ -216,6 +223,57 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    /* YouTube Video Component UI Card */
+    .video-section {
+      margin-top: 60px;
+      border-top: 1px solid #1f2937;
+      padding-top: 40px;
+    }
+
+    .video-card {
+      background-color: #111827;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #1f2937;
+      transition: transform 0.3s;
+    }
+
+    .video-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      /* 16:9 Aspect Ratio */
+      height: 0;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .video-meta {
+      padding: 15px;
+    }
+
+    .video-meta h4 {
+      font-size: 16px;
+      margin-bottom: 5px;
+      color: #ffffff;
+    }
+
+    .video-meta p {
+      color: #9ca3af;
+      font-size: 13px;
     }
 
     /* Dynamic Album Playlist Layer Viewport Panel */
@@ -365,6 +423,7 @@
       <ul>
         <li><a href="#" class="active" id="homeNavLink" onclick="resetToHomeView()">Home</a></li>
         <li><a href="#" id="discoverNavLink" onclick="scrollToCatalogSection()">Discover Artists</a></li>
+        <li><a href="#" id="videosNavLink" onclick="scrollToVideoSection()">Featured Videos</a></li>
       </ul>
     </nav>
   </header>
@@ -389,6 +448,47 @@
       <h2><i class="fa-solid fa-users"></i> Featured Artists & Creators</h2>
       <div class="music-grid" id="artistsDisplayGrid"></div>
     </section>
+
+    <!-- UPDATED: YouTube Video Embedded Section with specific URLs -->
+    <section class="video-section" id="videos-section">
+      <h2><i class="fa-brands fa-youtube"></i> Featured Music Videos & Live Sessions</h2>
+      <div class="video-grid">
+
+        <!-- Video Card 1 -->
+        <div class="video-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/vY4ENT25Naw" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <h4>Kotwembela (Official Video)</h4>
+            <p>Phillip Lisomona Music</p>
+          </div>
+        </div>
+
+        <!-- Video Card 2 -->
+        <div class="video-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/pV6dE6-2A60" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <h4>Ndakulumba (feat. Ashers Masempela)</h4>
+            <p>Phillip Lisomona Music</p>
+          </div>
+        </div>
+
+        <!-- Video Card 3 -->
+        <div class="video-card">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/bsdO8XT1x44" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <h4>Sena Ndileelela (Am I Worthy)</h4>
+            <p>Phillip Lisomona ft. Ashers Masempela</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
   </main>
 
   <div class="audio-player" id="audioPlayer">
@@ -403,7 +503,7 @@
   </div>
 
   <script>
-    // Global State Memory Store Repository - Updated with exactly 3 tracks per album across all 13 artists
+    // Global State Memory Store Repository
     const CORE_STORE = {
       artists: [{
           id: "phillip-lisomona",
@@ -413,91 +513,35 @@
           albums: [{
               title: "Album 1: Kotwembela Collection",
               releaseYear: "2026",
-              tracks: [
-                { title: "Kotwembela", src: "phillip.mp3" },
-                { title: "Ndakulumba", src: "ndakulumba.mp3" },
-                { title: "Hena Ndilelela", src: "hena.mp3" }
+              tracks: [{
+                  title: "Kotwembela",
+                  src: "phillip.mp3"
+                },
+                {
+                  title: "Ndakulumba",
+                  src: "ndakulumba.mp3"
+                },
+                {
+                  title: "Hena Ndilelela",
+                  src: "hena.mp3"
+                }
               ]
             },
             {
               title: "Album 2: Grace & Mercy Beats",
               releaseYear: "2026",
-              tracks: [
-                { title: "Grace Revealed", src: "grace1.mp3" },
-                { title: "Infinite Mercy", src: "mercy2.mp3" },
-                { title: "Undeserved Favor", src: "favor3.mp3" }
-              ]
-            },
-            {
-              title: "Album 3: Echoes of Faith",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Morning Prayer", src: "prayer1.mp3" },
-                { title: "Noonday Strength", src: "strength2.mp3" },
-                { title: "Evening Devotion", src: "devotion3.mp3" }
-              ]
-            },
-            {
-              title: "Album 4: Legacy of Praise",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Unbroken Chain", src: "chain1.mp3" },
-                { title: "Ancient of Days", src: "ancient2.mp3" },
-                { title: "Generational Shout", src: "shout3.mp3" }
-              ]
-            },
-            {
-              title: "Album 5: Light of the World",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Eternal Light", src: "light1.mp3" },
-                { title: "Chasing Shadows", src: "shadows2.mp3" },
-                { title: "The Beacon Glows", src: "beacon3.mp3" }
-              ]
-            },
-            {
-              title: "Album 6: Streams of Living Water",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Pure River", src: "river1.mp3" },
-                { title: "Deep Oceans of Love", src: "ocean2.mp3" },
-                { title: "The Wellspring", src: "well3.mp3" }
-              ]
-            },
-            {
-              title: "Album 7: The Altar Call",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Humble Cry", src: "cry1.mp3" },
-                { title: "Broken and Contrite", src: "broken2.mp3" },
-                { title: "Sweet Surrender", src: "surrender3.mp3" }
-              ]
-            },
-            {
-              title: "Album 8: Mighty Fortress",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Strong Tower", src: "tower1.mp3" },
-                { title: "Shield of Faith", src: "shield2.mp3" },
-                { title: "Victory Walls", src: "walls3.mp3" }
-              ]
-            },
-            {
-              title: "Album 9: Sacred Sanctuary",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Holy Ground", src: "holy1.mp3" },
-                { title: "Behind the Veil", src: "veil2.mp3" },
-                { title: "The Secret Place", src: "secret3.mp3" }
-              ]
-            },
-            {
-              title: "Album 10: Victory Shout",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Triumph Dance", src: "triumph1.mp3" },
-                { title: "Overcomer Anthem", src: "overcomer2.mp3" },
-                { title: "Enemy Defeated", src: "defeated3.mp3" }
+              tracks: [{
+                  title: "Grace Revealed",
+                  src: "grace1.mp3"
+                },
+                {
+                  title: "Infinite Mercy",
+                  src: "mercy2.mp3"
+                },
+                {
+                  title: "Undeserved Favor",
+                  src: "favor3.mp3"
+                }
               ]
             }
           ]
@@ -508,96 +552,22 @@
           avatar: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300",
           metaDescription: "Electronic Soundscapes & Digital Beats Production Studio",
           albums: [{
-              title: "Album 1: Summer Resonance LP",
-              releaseYear: "2025",
-              tracks: [
-                { title: "Summer Vibes", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-                { title: "Ocean Breeze", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-                { title: "Sand & Solitude", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" }
-              ]
-            },
-            {
-              title: "Album 2: Neon Horizon Paths",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Midnight Drive", src: "drive1.mp3" },
-                { title: "Cyber Cruise", src: "cruise2.mp3" },
-                { title: "Cityscape Interlude", src: "city3.mp3" }
-              ]
-            },
-            {
-              title: "Album 3: Synth Waves Vol 1",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Retro Pulse", src: "pulse1.mp3" },
-                { title: "80s Rewind", src: "rewind2.mp3" },
-                { title: "Digital Horizon", src: "horizon3.mp3" }
-              ]
-            },
-            {
-              title: "Album 4: Sunset Frequencies",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Dusk Glow", src: "dusk1.mp3" },
-                { title: "Golden Hour Jam", src: "golden2.mp3" },
-                { title: "Purple Sky", src: "purple3.mp3" }
-              ]
-            },
-            {
-              title: "Album 5: Cybernetic Pulse",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Core Override", src: "core1.mp3" },
-                { title: "Data Stream", src: "data2.mp3" },
-                { title: "Matrix Glitch", src: "matrix3.mp3" }
-              ]
-            },
-            {
-              title: "Album 6: Atmospheric Heights",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Stratosphere", src: "strato1.mp3" },
-                { title: "Cloud Nine", src: "cloud2.mp3" },
-                { title: "Zero Gravity Bounce", src: "gravity3.mp3" }
-              ]
-            },
-            {
-              title: "Album 7: Deep Bass Foundations",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Subwoofer Sub", src: "sub1.mp3" },
-                { title: "Low Frequency Grid", src: "low2.mp3" },
-                { title: "Rumble Chamber", src: "rumble3.mp3" }
-              ]
-            },
-            {
-              title: "Album 8: Lo-Fi Study Lounge",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Coffee Shop Chill", src: "coffee1.mp3" },
-                { title: "Raindrops on Glass", src: "rain2.mp3" },
-                { title: "Midnight Pages", src: "pages3.mp3" }
-              ]
-            },
-            {
-              title: "Album 9: Galactic Interstellar",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Nebula Dust", src: "nebula1.mp3" },
-                { title: "Orion's Belt", src: "orion2.mp3" },
-                { title: "Deep Cosmic Void", src: "void3.mp3" }
-              ]
-            },
-            {
-              title: "Album 10: Future Retroism",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Time Glitch", src: "glitch1.mp3" },
-                { title: "Analog Paradox", src: "paradox2.mp3" },
-                { title: "Chronos Symphony", src: "chronos3.mp3" }
-              ]
-            }
-          ]
+            title: "Album 1: Summer Resonance LP",
+            releaseYear: "2025",
+            tracks: [{
+                title: "Summer Vibes",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+              },
+              {
+                title: "Ocean Breeze",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+              },
+              {
+                title: "Sand & Solitude",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
+              }
+            ]
+          }]
         },
         {
           id: "zambian-rhythms-collective",
@@ -605,98 +575,23 @@
           avatar: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300",
           metaDescription: "Traditional sounds, kalindula vibes, and heritage instrumentation.",
           albums: [{
-              title: "Album 1: Heritage Beats & Strings",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Village Fire Dance", src: "dance1.mp3" },
-                { title: "Zambezi Current", src: "zambezi2.mp3" },
-                { title: "Baobab Shadow Tales", src: "baobab3.mp3" }
-              ]
-            },
-            {
-              title: "Album 2: Urban Pulse Heritage",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Lusaka Street Groove", src: "lusaka1.mp3" },
-                { title: "Matero Funk", src: "matero2.mp3" },
-                { title: "Chilenje Sunset Rhythm", src: "chilenje3.mp3" }
-              ]
-            },
-            {
-              title: "Album 3: Kalindula Strings Tales",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Banjo Rhythm", src: "banjo1.mp3" },
-                { title: "Four-String Magic", src: "magic2.mp3" },
-                { title: "Old Tavern Tales", src: "tavern3.mp3" }
-              ]
-            },
-            {
-              title: "Album 4: Drums of the Luangwa",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Thunder Skins", src: "skins1.mp3" },
-                { title: "Valley Resonance", src: "valley2.mp3" },
-                { title: "Wildlife Awakening Call", src: "wildlife3.mp3" }
-              ]
-            },
-            {
-              title: "Album 5: Victoria Echoes",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Mosi-oa-Tunya Mist", src: "mist1.mp3" },
-                { title: "The Smoke That Thunders", src: "smoke2.mp3" },
-                { title: "Livingstone Sunset", src: "livingstone3.mp3" }
-              ]
-            },
-            {
-              title: "Album 6: Copperbelt Folklore",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Miner's Anthem", src: "miner1.mp3" },
-                { title: "Kitwe Hustle", src: "kitwe2.mp3" },
-                { title: "Shanyama Vibes", src: "shanyama3.mp3" }
-              ]
-            },
-            {
-              title: "Album 7: Intertribal Harmony",
-              releaseYear: "2026",
-              tracks: [
-                { title: "United Sounds", src: "united1.mp3" },
-                { title: "One Zambia One Nation", src: "nation2.mp3" },
-                { title: "Peace Gathering Jam", src: "peace3.mp3" }
-              ]
-            },
-            {
-              title: "Album 8: Harvest Moon Chants",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Season of Plenty", src: "harvest1.mp3" },
-                { title: "Maize Field Chants", src: "maize2.mp3" },
-                { title: "Chieftaincy Celebration", src: "chief3.mp3" }
-              ]
-            },
-            {
-              title: "Album 9: Acoustic Traditions",
-              releaseYear: "2026",
-              tracks: [
-                { title: "Raw Strings", src: "raw1.mp3" },
-                { title: "Handcrafted Melodies", src: "handcrafted2.mp3" },
-                { title: "Campfire Solos", src: "campfire3.mp3" }
-              ]
-            },
-            {
-              title: "Album 10: Modern Roots Blend",
-              releaseYear: "2026",
-              tracks: [
-                { title: "New Dawn Kalindula", src: "roots1.mp3" },
-                { title: "Hybrid Basslines", src: "hybrid2.mp3" },
-                { title: "NextGen Heritage Flow", src: "nextgen3.mp3" }
-              ]
-            }
-          ]
+            title: "Album 1: Heritage Beats & Strings",
+            releaseYear: "2026",
+            tracks: [{
+                title: "Village Fire Dance",
+                src: "dance1.mp3"
+              },
+              {
+                title: "Zambezi Current",
+                src: "zambezi2.mp3"
+              },
+              {
+                title: "Baobab Shadow Tales",
+                src: "baobab3.mp3"
+              }
+            ]
+          }]
         },
-        /* New Artist 1 */
         {
           id: "abel-chungu-fan",
           name: "Abel Chungu Fan-Vault",
@@ -705,14 +600,21 @@
           albums: [{
             title: "Abel Selection Vol. 1",
             releaseYear: "2025",
-            tracks: [
-              { title: "Lovesong Tribute", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-              { title: "Fire & Grace Accent", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-              { title: "Zambian Sky Anthem", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" }
+            tracks: [{
+                title: "Lovesong Tribute",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+              },
+              {
+                title: "Fire & Grace Accent",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+              },
+              {
+                title: "Zambian Sky Anthem",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
+              }
             ]
           }]
         },
-        /* New Artist 2 */
         {
           id: "chef-187-style",
           name: "Copperbelt Lyricist Hub",
@@ -721,14 +623,21 @@
           albums: [{
             title: "Rhyme Premium Pack",
             releaseYear: "2026",
-            tracks: [
-              { title: "Street Philosophy", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-              { title: "Kitwe Heavy Bars", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
-              { title: "The Numeric Kingflow", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" }
+            tracks: [{
+                title: "Street Philosophy",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+              },
+              {
+                title: "Kitwe Heavy Bars",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"
+              },
+              {
+                title: "The Numeric Kingflow",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"
+              }
             ]
           }]
         },
-        /* New Artist 3 */
         {
           id: "yo-maps-vibe",
           name: "Melody Maker Yo-Vibes",
@@ -737,14 +646,21 @@
           albums: [{
             title: "Kondolo Echoes",
             releaseYear: "2026",
-            tracks: [
-              { title: "Love & Dance", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
-              { title: "Location Serenade", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-              { title: "Blessings & Tears", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" }
+            tracks: [{
+                title: "Love & Dance",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
+              },
+              {
+                title: "Location Serenade",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+              },
+              {
+                title: "Blessings & Tears",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3"
+              }
             ]
           }]
         },
-        /* New Artist 4 */
         {
           id: "ephraim-gospel-sonics",
           name: "Ephraim Sonics",
@@ -753,14 +669,21 @@
           albums: [{
             title: "Lazarus Walking",
             releaseYear: "2024",
-            tracks: [
-              { title: "Praise Unto Kings", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
-              { title: "Healed & Redeemed", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
-              { title: "The Throne Presence", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" }
+            tracks: [{
+                title: "Praise Unto Kings",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"
+              },
+              {
+                title: "Healed & Redeemed",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"
+              },
+              {
+                title: "The Throne Presence",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
+              }
             ]
           }]
         },
-        /* New Artist 5 */
         {
           id: "pompi-inspired",
           name: "The African King's Lounge",
@@ -769,14 +692,21 @@
           albums: [{
             title: "Misenge Suite",
             releaseYear: "2026",
-            tracks: [
-              { title: "Capital Story", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
-              { title: "Corporate Hip-Hop Funk", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" },
-              { title: "The Giant Awakens", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" }
+            tracks: [{
+                title: "Capital Story",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"
+              },
+              {
+                title: "Corporate Hip-Hop Funk",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3"
+              },
+              {
+                title: "The Giant Awakens",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+              }
             ]
           }]
         },
-        /* New Artist 6 */
         {
           id: "esther-chungu-acoustics",
           name: "Esther Harmony Project",
@@ -785,14 +715,21 @@
           albums: [{
             title: "Healing Streams",
             releaseYear: "2026",
-            tracks: [
-              { title: "Jehovah's Grace", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
-              { title: "Restoration Symphony", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-              { title: "Mama's Prayer Closet", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" }
+            tracks: [{
+                title: "Jehovah's Grace",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3"
+              },
+              {
+                title: "Restoration Symphony",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+              },
+              {
+                title: "Mama's Prayer Closet",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+              }
             ]
           }]
         },
-        /* New Artist 7 */
         {
           id: "slapdee-revisited",
           name: "XYZ Legacy Tracks",
@@ -801,14 +738,21 @@
           albums: [{
             title: "The Next Level EP",
             releaseYear: "2025",
-            tracks: [
-              { title: "Vibe Standard", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
-              { title: "Realism vs Hype", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
-              { title: "The Crown Handover", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" }
+            tracks: [{
+                title: "Vibe Standard",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"
+              },
+              {
+                title: "Realism vs Hype",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
+              },
+              {
+                title: "The Crown Handover",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
+              }
             ]
           }]
         },
-        /* New Artist 8 */
         {
           id: "cleo-ice-queen-beats",
           name: "Ice Queen Studios",
@@ -817,160 +761,86 @@
           albums: [{
             title: "Glow Season",
             releaseYear: "2026",
-            tracks: [
-              { title: "Queen's Speech", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
-              { title: "Monique Crown Glow", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
-              { title: "Baila Cypher Feature", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" }
-            ]
-          }]
-        },
-        /* New Artist 9 */
-        {
-          id: "t-sean-baila",
-          name: "Baila Audio Base",
-          avatar: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=300",
-          metaDescription: "Dancehall textures, club bangers, and smooth vocal arrangements.",
-          albums: [{
-            title: "The Dancehall Kingpin",
-            releaseYear: "2026",
-            tracks: [
-              { title: "Rhythm Reloaded", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" },
-              { title: "Baila Reggae Roots", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
-              { title: "Voodoo Love Sound", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" }
-            ]
-          }]
-        },
-        /* New Artist 10 */
-        {
-          id: "roberto-afro-rhythm",
-          name: "Roberto Regional Waves",
-          avatar: "https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=300",
-          metaDescription: "Cross-border Afro-pop bangers and romantic club ballads.",
-          albums: [{
-            title: "Amarulah Nights",
-            releaseYear: "2025",
-            tracks: [
-              { title: "Global Connector", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-              { title: "Into the Starshine", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
-              { title: "Oceanic Romance Mix", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" }
+            tracks: [{
+                title: "Queen's Speech",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
+              },
+              {
+                title: "Monique Crown Glow",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3"
+              },
+              {
+                title: "Fierce Outro",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+              }
             ]
           }]
         }
       ]
     };
-
-    // Cache System Core Control Pointers
+    // UI Render logic elements
     const audio = document.getElementById('mainAudio');
-    const player = document.getElementById('audioPlayer');
-    const playerTitle = document.getElementById('playerTitle');
-    const playerArtist = document.getElementById('playerArtist');
     const playBtn = document.getElementById('playBtn');
-    const artistsDisplayGrid = document.getElementById('artistsDisplayGrid');
-    const playlistDisplayWrapper = document.getElementById('playlistDisplayWrapper');
+    const player = document.getElementById('audioPlayer');
 
-    // Initializer Hook Bootstrapper 
-    document.addEventListener("DOMContentLoaded", function() {
-      renderRosterGrid();
-    });
-
-    // Grid Generator Roster Engine Layout Locked 3-Column Core Loop
-    function renderRosterGrid() {
-      artistsDisplayGrid.innerHTML = '';
-      CORE_STORE.artists.forEach(artist => {
-        let totalTracksCount = 0;
-        artist.albums.forEach(alb => totalTracksCount += alb.tracks.length);
-        const componentHTML = `
-                    <div class="artist-card" onclick="revealPlaylistOverlay('${artist.id}')">
-                        <div class="card-img">
-                            <img src="${artist.avatar}" alt="${artist.name}" onerror="this.src='https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=300'">
-                            <div class="play-overlay"><i class="fa-solid fa-list-ul"></i></div>
-                        </div>
-                        <h3>${artist.name}</h3>
-                        <p>${artist.albums.length} Album(s) • ${totalTracksCount} Audio Tracks</p>
-                    </div>
-                `;
-        artistsDisplayGrid.insertAdjacentHTML('beforeend', componentHTML);
-      });
+    function renderArtists(artistsList) {
+      const grid = document.getElementById('artistsDisplayGrid');
+      grid.innerHTML = artistsList.map(artist => `
+        <div class="artist-card" onclick="viewArtistPlaylist('${artist.id}')">
+          <div class="card-img">
+            <img src="${artist.avatar}" alt="${artist.name}">
+            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+          </div>
+          <h3>${artist.name}</h3>
+          <p>${artist.metaDescription}</p>
+        </div>
+      `).join('');
     }
 
-    // Context Display Engine Layer For Selected Artist Playlists Switch Output Actions
-    function revealPlaylistOverlay(artistId) {
-      const artist = CORE_STORE.artists.find(a => a.id === artistId);
+    function viewArtistPlaylist(id) {
+      const artist = CORE_STORE.artists.find(a => a.id === id);
       if (!artist) return;
-      let structuralAlbumsHTML = '';
-      artist.albums.forEach(album => {
-        let albumTrackRowsHTML = '';
-        album.tracks.forEach((track, idx) => {
-          albumTrackRowsHTML += `
-                        <div class="track-row" onclick="streamTrack('${track.title.replace(/'/g, "\\'")}', '${artist.name.replace(/'/g, "\\'")}', '${track.src}')">
-                            <div class="track-row-left">
-                                <span class="track-idx">${idx + 1}</span>
-                                <i class="fa-solid fa-play-circle" style="color:#10b981;"></i>
-                                <span>${track.title}</span>
-                            </div>
-                            <span style="color:#6b7280; font-size:13px;">Stream MP3</span>
-                        </div>
-                    `;
-        });
-        structuralAlbumsHTML += `
-                    <div class="album-block">
-                        <div class="album-title-meta">
-                            <i class="fa-solid fa-compact-disc"></i>
-                            <strong>${album.title}</strong> 
-                            <span style="font-size:12px; color:#6b7280;">(${album.releaseYear})</span>
-                        </div>
-                        <div class="tracks-list-container">${albumTrackRowsHTML}</div>
-                    </div>
-                `;
-      });
-      playlistDisplayWrapper.innerHTML = `
-                <div class="playlist-view">
-                    <div class="playlist-header">
-                        <div class="artist-profile-summary">
-                            <img src="${artist.avatar}" alt="${artist.name}" onerror="this.src='https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=300'">
-                            <div>
-                                <h2 style="margin-bottom:2px;">${artist.name}</h2>
-                                <p style="color:#9ca3af; font-size:14px;">${artist.metaDescription}</p>
-                            </div>
-                        </div>
-                        <button class="close-playlist-btn" onclick="hidePlaylistPanel()"><i class="fa-solid fa-xmark"></i> Close Playlist</button>
-                    </div>
-                    <div class="playlist-payload-albums">${structuralAlbumsHTML}</div>
-                </div>
-            `;
-      playlistDisplayWrapper.style.display = 'block';
-      playlistDisplayWrapper.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
-
-    function hidePlaylistPanel() {
-      playlistDisplayWrapper.style.display = 'none';
-    }
-
-    function resetToHomeView() {
-      hidePlaylistPanel();
-      document.getElementById('globalSearchField').value = '';
-      renderRosterGrid();
-      window.scrollTo({
-        top: 0,
+      const wrapper = document.getElementById('playlistDisplayWrapper');
+      wrapper.style.display = 'block';
+      let albumsHTML = artist.albums.map(album => `
+        <div class="album-block">
+          <div class="album-title-meta"><i class="fa-solid fa-compact-disc"></i> ${album.title} (${album.releaseYear})</div>
+          ${album.tracks.map((track, idx) => `
+            <div class="track-row" onclick="playTrack('${track.title}', '${artist.name}', '${track.src}')">
+              <div class="track-row-left">
+                <span class="track-idx">${idx + 1}</span>
+                <span>${track.title}</span>
+              </div>
+              <i class="fa-solid fa-circle-play" style="color:#10b981;"></i>
+            </div>
+          `).join('')}
+        </div>
+      `).join('');
+      wrapper.innerHTML = `
+        <div class="playlist-view">
+          <div class="playlist-header">
+            <div class="artist-profile-summary">
+              <img src="${artist.avatar}">
+              <div>
+                <h2>${artist.name}</h2>
+                <p style="color:#9ca3af;">${artist.metaDescription}</p>
+              </div>
+            </div>
+            <button class="close-playlist-btn" onclick="document.getElementById('playlistDisplayWrapper').style.display='none'">Close View</button>
+          </div>
+          ${albumsHTML}
+        </div>
+      `;
+      wrapper.scrollIntoView({
         behavior: 'smooth'
       });
     }
 
-    function scrollToCatalogSection() {
-      document.getElementById('catalog-section').scrollIntoView({
-        behavior: 'smooth'
-      });
-    }
-
-    // Functional Audio Player Control Core Subsystems
-    function streamTrack(title, artist, sourceURL) {
+    function playTrack(title, artist, src) {
+      document.getElementById('playerTitle').innerText = title;
+      document.getElementById('playerArtist').innerText = artist;
+      audio.src = src;
       player.style.visibility = 'visible';
-      playerTitle.innerText = title;
-      playerArtist.innerText = artist;
-      audio.src = sourceURL;
       audio.play();
       playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
     }
@@ -985,103 +855,38 @@
       }
     }
 
-    // Real-Time Query Filter Input Operations Pattern Matrix Lookups
     function filterGlobalTracks() {
-      const currentQuery = document.getElementById('globalSearchField').value.toLowerCase().trim();
-      if (!currentQuery) {
-        renderRosterGrid();
-        return;
-      }
-      artistsDisplayGrid.innerHTML = '';
-      CORE_STORE.artists.forEach(artist => {
-        let matchesSearch = artist.name.toLowerCase().includes(currentQuery);
-        if (!matchesSearch) {
-          artist.albums.forEach(al => {
-            if (al.title.toLowerCase().includes(currentQuery)) matchesSearch = true;
-            al.tracks.forEach(tr => {
-              if (tr.title.toLowerCase().includes(currentQuery)) matchesSearch = true;
-            });
-          });
-        }
-        if (matchesSearch) {
-          let totalTracksCount = 0;
-          artist.albums.forEach(alb => totalTracksCount += alb.tracks.length);
-          const componentHTML = `
-                        <div class="artist-card" onclick="revealPlaylistOverlay('${artist.id}')">
-                            <div class="card-img">
-                                <img src="${artist.avatar}" alt="${artist.name}" onerror="this.src='https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=300'">
-                                <div class="play-overlay"><i class="fa-solid fa-list-ul"></i></div>
-                            </div>
-                            <h3>${artist.name}</h3>
-                            <p>${artist.albums.length} Album(s) • ${totalTracksCount} Audio Tracks</p>
-                        </div>
-                    `;
-          artistsDisplayGrid.insertAdjacentHTML('beforeend', componentHTML);
-        }
+      const query = document.getElementById('globalSearchField').value.toLowerCase();
+      const filtered = CORE_STORE.artists.filter(artist =>
+        artist.name.toLowerCase().includes(query) ||
+        artist.metaDescription.toLowerCase().includes(query)
+      );
+      renderArtists(filtered);
+    }
+
+    function resetToHomeView() {
+      document.getElementById('globalSearchField').value = '';
+      document.getElementById('playlistDisplayWrapper').style.display = 'none';
+      renderArtists(CORE_STORE.artists);
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
       });
     }
 
-    // Key Combo Catch-Intercept Configuration Listener Actions Hooks (`Ctrl + U` / `Cmd + U`)
-    window.addEventListener('keydown', function(ev) {
-      if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'u') {
-        ev.preventDefault();
-        document.getElementById('admin-tag-uploader').click();
-      }
-    });
-
-    // Dynamic Native Embedded Tag Reader Pipeline Construction Logic Engine
-    function readMP3Tags(inputSource) {
-      const uploadedTargetFile = inputSource.files[0];
-      if (!uploadedTargetFile) return;
-      const structuredAudioBlobURL = URL.createObjectURL(uploadedTargetFile);
-      jsmediatags.read(uploadedTargetFile, {
-        onSuccess: function(extractedPayload) {
-          const id3Frames = extractedPayload.tags;
-          const cleanTitle = id3Frames.title || uploadedTargetFile.name.replace(/\.[^/.]+$/, "");
-          const targetArtistName = id3Frames.artist || "Admin Session Artist";
-          const targetAlbumName = id3Frames.album || "Admin Sandbox Single";
-          let convertedArtworkString = "https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=300";
-          if (id3Frames.picture) {
-            const { data, format } = id3Frames.picture;
-            let binaryContentBuffer = "";
-            for (let elementIdx = 0; elementIdx < data.length; elementIdx++) {
-              binaryContentBuffer += String.fromCharCode(data[elementIdx]);
-            }
-            convertedArtworkString = `data:${format};base64,${window.btoa(binaryContentBuffer)}`;
-          }
-          let artistNode = CORE_STORE.artists.find(a => a.name.toLowerCase() === targetArtistName.toLowerCase());
-          if (!artistNode) {
-            artistNode = {
-              id: targetArtistName.toLowerCase().replace(/[^a-z0-9]/g, "-"),
-              name: targetArtistName,
-              avatar: convertedArtworkString,
-              metaDescription: "Dynamically uploaded administrator local file index profile.",
-              albums: []
-            };
-            CORE_STORE.artists.push(artistNode);
-          }
-          let albumNode = artistNode.albums.find(al => al.title.toLowerCase() === targetAlbumName.toLowerCase());
-          if (!albumNode) {
-            albumNode = {
-              title: targetAlbumName,
-              releaseYear: "2026",
-              tracks: []
-            };
-            artistNode.albums.push(albumNode);
-          }
-          albumNode.tracks.unshift({
-            title: cleanTitle,
-            src: structuredAudioBlobURL
-          });
-          renderRosterGrid();
-          revealPlaylistOverlay(artistNode.id);
-          alert(`"${cleanTitle}" added to state repository.`);
-        },
-        onError: function(errorLog) {
-          alert("ID3 Tag structural read execution dropped. File parsing aborted.");
-        }
+    function scrollToCatalogSection() {
+      document.getElementById('catalog-section').scrollIntoView({
+        behavior: 'smooth'
       });
     }
+
+    function scrollToVideoSection() {
+      document.getElementById('videos-section').scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+    // Initialize 
+    renderArtists(CORE_STORE.artists);
   </script>
 </body>
 
