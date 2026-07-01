@@ -17,13 +17,19 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    body {
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden; /* Strict defense against horizontal shifting/scrolling */
       background-color: #0b0f19;
       color: #ffffff;
-      padding-bottom: 140px; /* Space for sticky audio player */
     }
 
-    /* Navigation Bar Framework */
+    body {
+      padding-bottom: 140px; /* Safe cushion area for global media controller overlay */
+    }
+
+    /* Responsive Header & Navigation Framework */
     header {
       display: flex;
       justify-content: space-between;
@@ -31,6 +37,8 @@
       padding: 20px 5%;
       background-color: #111827;
       border-bottom: 1px solid #1f2937;
+      flex-wrap: wrap;
+      gap: 15px;
     }
 
     .logo {
@@ -43,18 +51,25 @@
       cursor: pointer;
     }
 
+    nav {
+      max-width: 100%;
+    }
+
     nav ul {
       display: flex;
       list-style: none;
-      gap: 30px;
+      gap: 20px;
       align-items: center;
+      flex-wrap: wrap; /* Wraps items cleanly on extra narrow displays */
     }
 
     nav ul li a {
       color: #9ca3af;
       text-decoration: none;
       font-weight: 500;
+      font-size: 15px;
       transition: color 0.3s;
+      white-space: nowrap;
     }
 
     nav ul li a:hover,
@@ -62,16 +77,21 @@
       color: #ffffff;
     }
 
-    /* Hero Landing Showcase Jumbotron */
+    /* Hero Landing Jumbotron Section */
     .hero {
       background: linear-gradient(135deg, #111827 0%, #0b0f19 100%);
-      padding: 60px 5%;
+      padding: 50px 5%;
       text-align: center;
       border-bottom: 1px solid #1f2937;
     }
 
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
     .hero h1 {
-      font-size: 42px;
+      font-size: clamp(28px, 5vw, 42px); /* Responsive typography matching scale without break-out */
       line-height: 1.2;
       margin-bottom: 15px;
     }
@@ -82,15 +102,16 @@
 
     .hero p {
       color: #9ca3af;
-      font-size: 18px;
-      margin-bottom: 35px;
+      font-size: clamp(14px, 2vw, 18px);
+      margin-bottom: 30px;
     }
 
     .search-bar {
       display: flex;
       align-items: center;
       background-color: #1f2937;
-      max-width: 600px;
+      max-width: 100%;
+      width: 500px;
       margin: 0 auto;
       border-radius: 50px;
       padding: 5px 20px;
@@ -112,43 +133,55 @@
       padding: 10px 0;
     }
 
-    /* Core View Containers layout */
+    /* View Core Containers layout */
     main {
       padding: 40px 5%;
+      max-width: 100%;
     }
 
     .music-section h2, .video-section h2 {
-      font-size: 24px;
+      font-size: clamp(20px, 4vw, 24px);
       margin-bottom: 25px;
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
     .music-section h2 i, .video-section h2 i {
       color: #10b981;
     }
 
-    /* Locked 3-Column Component Grid Layer Matrix */
+    /* Adaptive Component Grid Layer Matrix - Clean Columns for All Layout Viewports */
     .music-grid, .video-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 30px;
+      gap: 25px;
     }
 
-    @media (max-width: 992px) {
+    /* Screen Breakpoints Matrix for Strict Fitting */
+    @media (max-width: 1024px) {
       .music-grid, .video-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 640px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 5%;
+      }
+      nav ul {
+        justify-content: center;
+        gap: 15px;
+      }
       .music-grid, .video-grid {
-        grid-template-columns: repeat(1, minmax(0, 1fr));
+        grid-template-columns: 1fr; /* True single column stack on mobile phones */
       }
     }
 
-    /* Interactive Structural Album Cards UI */
+    /* Structural Artist & Album Cards UI */
     .artist-card {
       background-color: #111827;
       padding: 16px;
@@ -156,6 +189,7 @@
       transition: transform 0.3s, background-color 0.3s;
       cursor: pointer;
       border: 1px solid #1f2937;
+      width: 100%;
     }
 
     .artist-card:hover {
@@ -218,7 +252,7 @@
       text-overflow: ellipsis;
     }
 
-    /* YouTube Video Component UI Card */
+    /* Embedded YouTube Component UI Layout Block */
     .video-section {
       margin-top: 60px;
       border-top: 1px solid #1f2937;
@@ -231,6 +265,7 @@
       overflow: hidden;
       border: 1px solid #1f2937;
       transition: transform 0.3s;
+      width: 100%;
     }
 
     .video-card:hover {
@@ -240,7 +275,7 @@
     .video-wrapper {
       position: relative;
       width: 100%;
-      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      padding-bottom: 56.25%; /* Fixed aspect lock aspect ratio 16:9 */
       height: 0;
     }
 
@@ -261,6 +296,9 @@
       font-size: 16px;
       margin-bottom: 5px;
       color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .video-meta p {
@@ -268,13 +306,14 @@
       font-size: 13px;
     }
 
-    /* Dynamic Album Playlist Layer Viewport Panel */
+    /* Fluid Dynamic Playlist Viewport Panel */
     .playlist-view {
       background-color: #111827;
       border-radius: 16px;
-      padding: 30px;
+      padding: clamp(15px, 3vw, 30px);
       margin-top: 20px;
       border: 1px solid #1f2937;
+      width: 100%;
     }
 
     .playlist-header {
@@ -284,12 +323,15 @@
       border-bottom: 1px solid #1f2937;
       padding-bottom: 20px;
       margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 15px;
     }
 
     .artist-profile-summary {
       display: flex;
       align-items: center;
       gap: 20px;
+      flex-wrap: wrap;
     }
 
     .artist-profile-summary img {
@@ -317,21 +359,23 @@
     .album-block {
       margin-bottom: 30px;
       background: #0b0f19;
-      padding: 20px;
+      padding: clamp(12px, 2vw, 20px);
       border-radius: 12px;
       border: 1px solid #1f2937;
+      width: 100%;
     }
 
     .album-title-meta {
-      font-size: 18px;
+      font-size: 17px;
       color: #10b981;
       margin-bottom: 15px;
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
-    /* Rows Architecture for Tracklist Layout Selection */
+    /* Architecture layout for individual Tracklist Rows Selection */
     .track-row {
       display: flex;
       justify-content: space-between;
@@ -341,6 +385,7 @@
       cursor: pointer;
       transition: background 0.2s;
       border-bottom: 1px solid #111827;
+      gap: 10px;
     }
 
     .track-row:hover {
@@ -351,20 +396,30 @@
       display: flex;
       align-items: center;
       gap: 15px;
+      min-width: 0; /* Prevents long string overflows */
+      flex: 1;
+    }
+
+    .track-row-left span:last-child {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .track-idx {
       color: #6b7280;
       font-weight: bold;
       width: 20px;
+      flex-shrink: 0;
     }
 
-    /* ADDED: Structural Footer Architecture Styles */
+    /* Structural Responsive Footer Architecture */
     footer {
       background-color: #111827;
       border-top: 1px solid #1f2937;
       padding: 40px 5% 20px 5%;
       margin-top: 60px;
+      width: 100%;
     }
 
     .footer-container {
@@ -376,24 +431,31 @@
     }
 
     .footer-brand {
-      flex: 1;
-      min-width: 250px;
+      flex: 1.5;
+      min-width: 260px;
     }
 
     .footer-brand p {
       color: #9ca3af;
       font-size: 14px;
-      margin-top: 10px;
+      margin-top: 15px;
       line-height: 1.6;
     }
 
     .footer-links {
       display: flex;
-      gap: 60px;
+      gap: 40px, 60px;
+      flex-wrap: wrap;
+      flex: 2;
+      justify-content: flex-end;
+    }
+
+    .footer-column {
+      min-width: 140px;
     }
 
     .footer-column h5 {
-      font-size: 16px;
+      font-size: 15px;
       color: #ffffff;
       margin-bottom: 15px;
       text-transform: uppercase;
@@ -450,19 +512,14 @@
       transform: scale(1.1);
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       .footer-links {
-        flex-direction: column;
-        gap: 30px;
+        justify-content: flex-start;
         width: 100%;
-      }
-      .footer-bottom {
-        flex-direction: column;
-        text-align: center;
       }
     }
 
-    /* Persistent Bottom Media Controller Overlay UI Rules */
+    /* Fixed Persistent Bottom Overlay Media Player Framework */
     .audio-player {
       position: fixed;
       bottom: 0;
@@ -470,40 +527,49 @@
       width: 100%;
       background-color: #111827;
       border-top: 1px solid #1f2937;
-      padding: 20px 5%;
+      padding: 15px 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 1000;
       visibility: hidden;
+      gap: 15px;
+    }
+
+    .player-info {
+      min-width: 0; /* Fixes block expansion mechanics on mobile phone flex boxes */
+      flex: 1;
     }
 
     .player-info h4 {
-      font-size: 16px;
+      font-size: 15px;
       margin-bottom: 2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 250px;
     }
 
     .player-info p {
       color: #9ca3af;
       font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .player-controls button {
       background-color: #10b981;
       color: white;
-      width: 50px;
-      height: 50px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 20px;
+      font-size: 18px;
       cursor: pointer;
       border: none;
+      flex-shrink: 0;
     }
   </style>
 </head>
@@ -537,7 +603,7 @@
   </section>
 
   <main>
-    <div id="playlistDisplayWrapper" style="display: none; margin-bottom: 40px;"></div>
+    <div id="playlistDisplayWrapper" style="display: none; margin-bottom: 40px; width: 100%;"></div>
 
     <section class="music-section" id="catalog-section">
       <h2><i class="fa-solid fa-users"></i> Featured Artists & Creators</h2>
@@ -580,12 +646,22 @@
             <p>Phillip Lisomona ft. Ashers Masempela</p>
           </div>
         </div>
+        
+        <!-- Video Card 4 -->
+        <div class="video-card">
+          <div class="video-wrapper">
+            <iframe src="https://youtu.be/u4e4RpCwzDs?si=32X-2rhoGBfdX8qw" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <h4>Nyika Njotukede</h4>
+            <p>Phillip Lisomona</p>
+          </div>
+        </div>
 
       </div>
     </section>
   </main>
 
-  <!-- ADDED: Footer Element Block Structure -->
   <footer>
     <div class="footer-container">
       <div class="footer-brand">
@@ -629,7 +705,7 @@
     </div>
     <div class="player-controls">
       <audio id="mainAudio" src=""></audio>
-      <button onclick="togglePlay()" id="playBtn"><i class="fa-solid fa-pause"></i></button>
+      <button onclick="togglePlay()" id="playBtn"><i class="fa-solid fa-play"></i></button>
     </div>
   </div>
 
@@ -640,7 +716,7 @@
           id: "phillip-lisomona",
           name: "Phillip Lisomona",
           avatar: "p1.jpg",
-          metaDescription: "Resident Gospel and Traditional Fusion Artist",
+          metaDescription: "Gospel Artist",
           albums: [{
               title: "Album 1: Kotwembela Collection",
               releaseYear: "2026",
@@ -912,7 +988,7 @@
       ]
     };
 
-    // UI Render logic elements
+    // UI Render elements
     const audio = document.getElementById('mainAudio');
     const playBtn = document.getElementById('playBtn');
     const player = document.getElementById('audioPlayer');
@@ -947,7 +1023,7 @@
                 <span class="track-idx">${idx + 1}</span>
                 <span>${track.title}</span>
               </div>
-              <i class="fa-solid fa-circle-play" style="color:#10b981;"></i>
+              <i class="fa-solid fa-circle-play" style="color:#10b981; flex-shrink: 0;"></i>
             </div>
           `).join('')}
         </div>
