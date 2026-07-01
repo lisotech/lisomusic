@@ -17,16 +17,19 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    html, body {
+    html,
+    body {
       width: 100%;
       max-width: 100%;
-      overflow-x: hidden; /* Strict defense against horizontal shifting/scrolling */
+      overflow-x: hidden;
+      /* Strict defense against horizontal shifting/scrolling */
       background-color: #0b0f19;
       color: #ffffff;
     }
 
     body {
-      padding-bottom: 140px; /* Safe cushion area for global media controller overlay */
+      padding-bottom: 140px;
+      /* Safe cushion area for global media controller overlay */
     }
 
     /* Responsive Header & Navigation Framework */
@@ -60,7 +63,8 @@
       list-style: none;
       gap: 20px;
       align-items: center;
-      flex-wrap: wrap; /* Wraps items cleanly on extra narrow displays */
+      flex-wrap: wrap;
+      /* Wraps items cleanly on extra narrow displays */
     }
 
     nav ul li a {
@@ -91,7 +95,8 @@
     }
 
     .hero h1 {
-      font-size: clamp(28px, 5vw, 42px); /* Responsive typography matching scale without break-out */
+      font-size: clamp(28px, 5vw, 42px);
+      /* Responsive typography matching scale without break-out */
       line-height: 1.2;
       margin-bottom: 15px;
     }
@@ -139,7 +144,8 @@
       max-width: 100%;
     }
 
-    .music-section h2, .video-section h2 {
+    .music-section h2,
+    .video-section h2 {
       font-size: clamp(20px, 4vw, 24px);
       margin-bottom: 25px;
       display: flex;
@@ -148,12 +154,14 @@
       flex-wrap: wrap;
     }
 
-    .music-section h2 i, .video-section h2 i {
+    .music-section h2 i,
+    .video-section h2 i {
       color: #10b981;
     }
 
     /* Adaptive Component Grid Layer Matrix - Clean Columns for All Layout Viewports */
-    .music-grid, .video-grid {
+    .music-grid,
+    .video-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 25px;
@@ -161,7 +169,9 @@
 
     /* Screen Breakpoints Matrix for Strict Fitting */
     @media (max-width: 1024px) {
-      .music-grid, .video-grid {
+
+      .music-grid,
+      .video-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
@@ -172,12 +182,16 @@
         text-align: center;
         padding: 20px 5%;
       }
+
       nav ul {
         justify-content: center;
         gap: 15px;
       }
-      .music-grid, .video-grid {
-        grid-template-columns: 1fr; /* True single column stack on mobile phones */
+
+      .music-grid,
+      .video-grid {
+        grid-template-columns: 1fr;
+        /* True single column stack on mobile phones */
       }
     }
 
@@ -275,7 +289,8 @@
     .video-wrapper {
       position: relative;
       width: 100%;
-      padding-bottom: 56.25%; /* Fixed aspect lock aspect ratio 16:9 */
+      padding-bottom: 56.25%;
+      /* Fixed aspect lock aspect ratio 16:9 */
       height: 0;
     }
 
@@ -396,7 +411,8 @@
       display: flex;
       align-items: center;
       gap: 15px;
-      min-width: 0; /* Prevents long string overflows */
+      min-width: 0;
+      /* Prevents long string overflows */
       flex: 1;
     }
 
@@ -537,7 +553,8 @@
     }
 
     .player-info {
-      min-width: 0; /* Fixes block expansion mechanics on mobile phone flex boxes */
+      min-width: 0;
+      /* Fixes block expansion mechanics on mobile phone flex boxes */
       flex: 1;
     }
 
@@ -613,7 +630,7 @@
     <section class="video-section" id="videos-section">
       <h2><i class="fa-brands fa-youtube"></i> Featured Music Videos & Live Sessions</h2>
       <div class="video-grid">
-        
+
         <!-- Video Card 1 -->
         <div class="video-card">
           <div class="video-wrapper">
@@ -678,7 +695,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2026 Lisomusic. Powered by Lisotech Innovations. All Rights Reserved.</p>
+      <p>&copy; 2026 Lisomusic. All Rights Reserved || Powered by Lisotech Innovations</p>
       <div class="footer-socials">
         <a href="https://youtube.com/@PhillipLisomonaMusic" target="_blank"><i class="fa-brands fa-youtube"></i></a>
         <a href="#"><i class="fa-brands fa-facebook"></i></a>
@@ -748,23 +765,22 @@
           avatar: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300",
           metaDescription: "Electronic Soundscapes & Digital Beats Production Studio",
           albums: [{
-              title: "Album 1: Summer Resonance LP",
-              releaseYear: "2025",
-              tracks: [{
-                  title: "Summer Vibes",
-                  src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
-                },
-                {
-                  title: "Ocean Breeze",
-                  src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
-                },
-                {
-                  title: "Sand & Solitude",
-                  src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
-                }
-              ]
-            }
-          ]
+            title: "Album 1: Summer Resonance LP",
+            releaseYear: "2025",
+            tracks: [{
+                title: "Summer Vibes",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+              },
+              {
+                title: "Ocean Breeze",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+              },
+              {
+                title: "Sand & Solitude",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
+              }
+            ]
+          }]
         },
         {
           id: "zambian-rhythms-collective",
@@ -772,23 +788,22 @@
           avatar: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300",
           metaDescription: "Traditional sounds, kalindula vibes, and heritage instrumentation.",
           albums: [{
-              title: "Album 1: Heritage Beats & Strings",
-              releaseYear: "2026",
-              tracks: [{
-                  title: "Village Fire Dance",
-                  src: "dance1.mp3"
-                },
-                {
-                  title: "Zambezi Current",
-                  src: "zambezi2.mp3"
-                },
-                {
-                  title: "Baobab Shadow Tales",
-                  src: "baobab3.mp3"
-                }
-              ]
-            }
-          ]
+            title: "Album 1: Heritage Beats & Strings",
+            releaseYear: "2026",
+            tracks: [{
+                title: "Village Fire Dance",
+                src: "dance1.mp3"
+              },
+              {
+                title: "Zambezi Current",
+                src: "zambezi2.mp3"
+              },
+              {
+                title: "Baobab Shadow Tales",
+                src: "baobab3.mp3"
+              }
+            ]
+          }]
         },
         {
           id: "abel-chungu-fan",
@@ -976,7 +991,6 @@
         }
       ]
     };
-
     // UI Render elements
     const audio = document.getElementById('mainAudio');
     const playBtn = document.getElementById('playBtn');
@@ -998,11 +1012,9 @@
 
     function viewArtistPlaylist(id) {
       const artist = CORE_STORE.artists.find(a => a.id === id);
-      if(!artist) return;
-      
+      if (!artist) return;
       const wrapper = document.getElementById('playlistDisplayWrapper');
       wrapper.style.display = 'block';
-      
       let albumsHTML = artist.albums.map(album => `
         <div class="album-block">
           <div class="album-title-meta"><i class="fa-solid fa-compact-disc"></i> ${album.title} (${album.releaseYear})</div>
@@ -1017,7 +1029,6 @@
           `).join('')}
         </div>
       `).join('');
-
       wrapper.innerHTML = `
         <div class="playlist-view">
           <div class="playlist-header">
@@ -1033,7 +1044,9 @@
           ${albumsHTML}
         </div>
       `;
-      wrapper.scrollIntoView({ behavior: 'smooth' });
+      wrapper.scrollIntoView({
+        behavior: 'smooth'
+      });
     }
 
     function playTrack(title, artist, src) {
@@ -1046,7 +1059,7 @@
     }
 
     function togglePlay() {
-      if(audio.paused) {
+      if (audio.paused) {
         audio.play();
         playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
       } else {
@@ -1057,8 +1070,8 @@
 
     function filterGlobalTracks() {
       const query = document.getElementById('globalSearchField').value.toLowerCase();
-      const filtered = CORE_STORE.artists.filter(artist => 
-        artist.name.toLowerCase().includes(query) || 
+      const filtered = CORE_STORE.artists.filter(artist =>
+        artist.name.toLowerCase().includes(query) ||
         artist.metaDescription.toLowerCase().includes(query)
       );
       renderArtists(filtered);
@@ -1068,17 +1081,23 @@
       document.getElementById('globalSearchField').value = '';
       document.getElementById('playlistDisplayWrapper').style.display = 'none';
       renderArtists(CORE_STORE.artists);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     }
 
     function scrollToCatalogSection() {
-      document.getElementById('catalog-section').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('catalog-section').scrollIntoView({
+        behavior: 'smooth'
+      });
     }
 
     function scrollToVideoSection() {
-      document.getElementById('videos-section').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('videos-section').scrollIntoView({
+        behavior: 'smooth'
+      });
     }
-
     // Initialize 
     renderArtists(CORE_STORE.artists);
   </script>
